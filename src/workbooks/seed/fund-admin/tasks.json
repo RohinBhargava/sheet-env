@@ -1,0 +1,150 @@
+{
+  "scenario": "fund-admin",
+  "fund": "Halverson Growth Partners III, L.P.",
+  "tasks": [
+    {
+      "id": "capital-call-4-allocation",
+      "title": "Allocate Capital Call No. 4 to the partners",
+      "instructions": "In Capital Calls/Capital Call 4 Notice.xlsx, fill in the Call Amount column (Allocation!E6:E17): each partner's share is its Commitment % multiplied by the Total capital call on the Call Summary sheet, rounded to the cent (for example =ROUND(D6*'Call Summary'!$C$12,2)). The Difference cell (Allocation!E21) must be 0. Save the workbook.",
+      "file": "Capital Calls/Capital Call 4 Notice.xlsx",
+      "checks": [
+        {
+          "sheet": "Allocation",
+          "cell": "E6",
+          "approx": 2640000,
+          "tolerance": 0.01
+        },
+        {
+          "sheet": "Allocation",
+          "cell": "E10",
+          "approx": 2310000,
+          "tolerance": 0.01
+        },
+        {
+          "sheet": "Allocation",
+          "cell": "E17",
+          "approx": 165000,
+          "tolerance": 0.01
+        },
+        {
+          "sheet": "Allocation",
+          "cell": "E18",
+          "approx": 16500000,
+          "tolerance": 0.01
+        },
+        {
+          "sheet": "Allocation",
+          "cell": "E21",
+          "approx": 0,
+          "tolerance": 0.005
+        }
+      ]
+    },
+    {
+      "id": "bank-reconciliation-sep-2026",
+      "title": "Reconcile the September 2026 operating account",
+      "instructions": "In Accounting/Bank Reconciliation Sep 2026.xlsx, compare the GL Cash sheet with the Bank Statement sheet and clear the difference on the Reconciliation sheet: (1) correct the GL entry that was posted with the wrong amount (the bank statement is right); (2) list the check that has not cleared the bank under \"Less: outstanding checks\" (Reconciliation!B9:C9); (3) record the bank credit and the bank charge that are missing from the GL under the two \"not recorded in the GL\" sections (B15:C15 and B18:C18). Enter amounts as positive numbers. Reconciliation!C22 (Difference) must be 0. Save the workbook.",
+      "file": "Accounting/Bank Reconciliation Sep 2026.xlsx",
+      "checks": [
+        {
+          "sheet": "GL Cash",
+          "cell": "D9",
+          "equals": 1250000
+        },
+        {
+          "sheet": "GL Cash",
+          "cell": "F14",
+          "approx": 2066200,
+          "tolerance": 0.005
+        },
+        {
+          "sheet": "Reconciliation",
+          "cell": "C11",
+          "approx": 2069527.57,
+          "tolerance": 0.005
+        },
+        {
+          "sheet": "Reconciliation",
+          "cell": "C20",
+          "approx": 2069527.57,
+          "tolerance": 0.005
+        },
+        {
+          "sheet": "Reconciliation",
+          "cell": "C22",
+          "approx": 0,
+          "tolerance": 0.005
+        }
+      ]
+    },
+    {
+      "id": "management-fee-q4-2026",
+      "title": "Calculate the Q4 2026 management fee",
+      "instructions": "In Accounting/Q4 2026 Management Fee.xlsx (sheet Fee Calc): enter the number of days in the quarter in C8 (quarter start and end both count); compute the quarterly fee in C10 as fee-paying commitments × annual rate × days ÷ 365, rounded to the cent; and fill each partner's Q4 2026 Fee in F13:F24 the same way on its own commitment (0 for a partner that is not fee-paying). Save the workbook.",
+      "file": "Accounting/Q4 2026 Management Fee.xlsx",
+      "checks": [
+        {
+          "sheet": "Fee Calc",
+          "cell": "C8",
+          "equals": 92
+        },
+        {
+          "sheet": "Fee Calc",
+          "cell": "C10",
+          "approx": 1247671.23,
+          "tolerance": 0.01
+        },
+        {
+          "sheet": "Fee Calc",
+          "cell": "F13",
+          "approx": 201643.84,
+          "tolerance": 0.01
+        },
+        {
+          "sheet": "Fee Calc",
+          "cell": "F22",
+          "approx": 63013.7,
+          "tolerance": 0.01
+        },
+        {
+          "sheet": "Fee Calc",
+          "cell": "F25",
+          "approx": 1247671.26,
+          "tolerance": 0.05
+        }
+      ]
+    },
+    {
+      "id": "capital-account-rollforward-q3-2026",
+      "title": "Fix the Q3 2026 capital account roll-forward",
+      "instructions": "In Investor Reporting/Capital Account Statements Q3 2026.xlsx, every partner's Ending Balance (Roll-forward!I6:I17) must equal Beginning + Contributions − Distributions − Management Fees + Realized + Unrealized. Two rows do not follow that rule; fix them so the Difference against the Fund Summary (Roll-forward!I21) is 0. Save the workbook.",
+      "file": "Investor Reporting/Capital Account Statements Q3 2026.xlsx",
+      "checks": [
+        {
+          "sheet": "Roll-forward",
+          "cell": "I10",
+          "approx": 11352250,
+          "tolerance": 0.01
+        },
+        {
+          "sheet": "Roll-forward",
+          "cell": "I14",
+          "approx": 7297875,
+          "tolerance": 0.01
+        },
+        {
+          "sheet": "Roll-forward",
+          "cell": "I18",
+          "approx": 81100000,
+          "tolerance": 0.01
+        },
+        {
+          "sheet": "Roll-forward",
+          "cell": "I21",
+          "approx": 0,
+          "tolerance": 0.005
+        }
+      ]
+    }
+  ]
+}

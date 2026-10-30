@@ -1,0 +1,57 @@
+/* Popup menus and tooltips (shell/Menu.tsx). */
+:root {
+  --font-ui: 'Segoe UI Variable Text', 'Selawik', sans-serif;
+  --font-classic: 'Segoe UI', 'Selawik', sans-serif;
+  --text: #1a1a1a;
+  --text-2: #5d5d5d;
+  --text-disabled: #a0a0a0;
+  --subtle-hover: rgba(0, 0, 0, 0.0373);
+  --flyout-bg: rgba(249, 249, 249, 0.96);
+  --shadow-flyout: 0 8px 16px rgba(0, 0, 0, 0.14), 0 0 2px rgba(0, 0, 0, 0.12);
+}
+.menu-root { position: fixed; z-index: 20000; font: 14px var(--font-ui); color: var(--text); }
+.menu-modern { background: var(--flyout-bg); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 8px; box-shadow: var(--shadow-flyout); padding: 4px 0; backdrop-filter: blur(30px); min-width: 180px; }
+.menu-modern .menu-item { height: 32px; margin: 0 4px; padding: 0 12px 0 8px; display: flex; align-items: center; border-radius: 4px; white-space: nowrap; gap: 0; }
+.menu-modern .menu-icon { width: 16px; height: 16px; margin: 0 12px 0 4px; display: flex; align-items: center; justify-content: center; color: #1a1a1a; flex: none; }
+.menu-modern .menu-sep { height: 1px; background: rgba(0, 0, 0, 0.0803); margin: 4px 0; }
+.menu-item.hi:not(.disabled) { background: var(--subtle-hover); }
+.menu-item.disabled { color: var(--text-disabled); }
+.menu-item.disabled .menu-icon { opacity: .45; }
+.menu-item.bold .menu-label { font-weight: 600; }
+.menu-label { flex: 1; }
+.menu-shortcut { color: var(--text-2); font-size: 12px; margin-left: 32px; }
+.menu-arrow { margin-left: 16px; display: flex; color: var(--text-2); }
+.menu-iconrow { display: flex; gap: 4px; padding: 0 8px 4px; margin-bottom: 4px; border-bottom: 1px solid rgba(0, 0, 0, 0.0803); }
+.menu-iconbtn { width: 40px; height: 32px; border: 0; background: transparent; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+.menu-iconbtn:hover:not(:disabled) { background: var(--subtle-hover); }
+.menu-iconbtn:disabled { opacity: .4; }
+/* Windows 11 shell context menu (desktop, Explorer items) and Explorer command-bar flyouts, measured on the VM:
+   solid #f9f9f9, 1 px #eaeaea border, 32 px rows, icon at 15 px and label at 43 px from the outer edge,
+   shortcut column left-aligned ending 16 px from the edge, submenu chevron centred 21 px from the edge.
+   Context menus: 9 px separators, 2 / 3 px end padding; flyouts: 3 px separators, 2 px end padding. */
+.menu-shellctx, .menu-flyout { background: #f9f9f9; border: 1px solid #eaeaea; backdrop-filter: none; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12), 0 0 2px rgba(0, 0, 0, 0.06); }
+.menu-shellctx { padding: 2px 0 3px; }
+.menu-flyout { padding: 2px 0; min-width: 0; }
+.menu-shellctx .menu-item, .menu-flyout .menu-item { margin: 0 4px; padding: 0 12px 0 10px; position: relative; }
+.menu-shellctx .menu-icon, .menu-flyout .menu-icon { margin: 0 12px 0 0; }
+.menu-flyout .menu-icon2 { margin: 0 11px 0 0; }
+.menu-shellctx .menu-sep { margin: 4px 4px; background: #eaeaea; }
+.menu-flyout .menu-sep { margin: 1px 4px; background: #ebebeb; }
+.menu-shellctx .menu-shortcut, .menu-flyout .menu-shortcut { width: var(--menu-sc-w, auto); margin-left: 24px; text-align: left; color: #5d5d5d; flex: none; }
+.menu-shellctx .menu-arrow, .menu-flyout .menu-arrow { position: absolute; right: 8px; top: 8px; margin: 0; color: #5d5d5d; }
+.menu-shellctx .menu-item:has(.menu-arrow):not(:has(.menu-shortcut)), .menu-flyout .menu-item:has(.menu-arrow):not(:has(.menu-shortcut)) { padding-right: 32px; }
+.menu-shellctx .menu-iconrow { display: flex; gap: 0; padding: 0 4px; margin: -2px 0 3px; height: 59px; border-bottom: 1px solid #eaeaea; align-items: stretch; }
+.menu-shellctx .menu-iconbtn { flex: 1; width: auto; height: auto; flex-direction: column; gap: 6px; font: 12px var(--font-classic); color: #1a1a1a; position: relative; margin: 4px 0; }
+.menu-shellctx .menu-iconbtn + .menu-iconbtn::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 6px; width: 1px; background: #ebebeb; }
+.menu-shellctx .menu-iconbtn:disabled { opacity: 1; color: #a0a0a0; }
+.menu-shellctx .menu-iconbtn:disabled svg { opacity: .45; }
+.menu-shellctx .menu-iconrow.bottom { margin: 3px 0 -3px; border-bottom: 0; border-top: 1px solid #eaeaea; }
+.menu-iconbtn-label { display: none; }
+.menu-shellctx .menu-iconbtn-label { display: block; line-height: 16px; }
+.menu-classic { background: #f9f9f9; border: 1px solid #c8c8c8; border-radius: 8px; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16); padding: 3px 0; font: 12px var(--font-classic); }
+.menu-classic .menu-item { height: 24px; margin: 0 3px; padding: 0 20px 0 4px; display: flex; align-items: center; border-radius: 4px; white-space: nowrap; }
+.menu-classic .menu-icon { width: 24px; height: 16px; display: flex; align-items: center; justify-content: center; margin-right: 6px; }
+.menu-classic .menu-sep { height: 1px; background: #dcdcdc; margin: 3px 0 3px 34px; }
+.menu-classic .menu-shortcut { font-size: 12px; color: inherit; }
+.tooltip { position: fixed; z-index: 30000; background: #f9f9f9; border: 1px solid rgba(0, 0, 0, 0.12); border-radius: 4px; padding: 5px 8px 6px; font: 12px/16px var(--font-ui);
+  color: var(--text); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12); pointer-events: none; max-width: 400px; }

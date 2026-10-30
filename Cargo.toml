@@ -1,0 +1,13 @@
+[workspace]
+resolver = "3"
+members = [
+    "src/workbooks",
+    "src/workbooks/.forklaunch/contracts",
+    "src/workbooks/sdk/rust",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "none"
+authors = ["ForkLaunch"]

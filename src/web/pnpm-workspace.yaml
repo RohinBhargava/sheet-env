@@ -1,0 +1,7 @@
+# The web app installs on its own (pnpm install in src/web); it shares no packages with the TypeScript
+# workspace in src/. Same supply-chain settings as src/pnpm-workspace.yaml.
+packages:
+  - .
+allowBuilds:
+  esbuild: true
+minimumReleaseAge: 1440

@@ -1,0 +1,39 @@
+{
+  "packageManager": "pnpm@11.28.7",
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "globals": "^17.13.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "oxlint": "^1.89.0",
+    "oxlint-tsgolint": "^7.0.2004",
+    "prettier": "^3.9.10",
+    "sort-package-json": "^3.0.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5",
+    "esbuild": "0.25.12"
+  },
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sdk:generate": "forklaunch sdk generate --target all --from contract",
+    "sdk:check": "forklaunch sdk generate --target all --from contract --check",
+    "sdk:watch": "forklaunch sdk watch --target all --from contract",
+    "sdk:typecheck": "pnpm --filter '@forklaunch-generated/*' --filter './src/*/sdk/typescript' build",
+    "dev": "forklaunch dev",
+    "build": "cargo build --workspace && pnpm -r --if-present run build",
+    "lint": "pnpm --dir src run lint && cargo clippy --workspace --all-targets --no-deps",
+    "lint:fix": "pnpm --dir src run lint:fix",
+    "format": "pnpm --dir src run format && cargo fmt --all",
+    "test": "pnpm --dir src run test && cargo test --workspace",
+    "rust:build": "cargo build --workspace",
+    "rust:test": "cargo test --workspace",
+    "rust:fmt": "cargo fmt",
+    "rust:lint": "cargo clippy --workspace --all-targets --no-deps",
+    "build:workbooks": "cargo build -p workbooks",
+    "test:workbooks": "cargo test -p workbooks",
+    "dev:workbooks": "cargo run -p workbooks"
+  }
+}

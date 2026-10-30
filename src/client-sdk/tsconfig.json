@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "eslint.config.mjs",
+    "vitest.config.ts",
+    "__test__"
+  ]
+}

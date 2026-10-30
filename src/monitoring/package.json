@@ -1,0 +1,30 @@
+{
+  "name": "@sheet-env/monitoring",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Monitoring library for sheet-env, defining metrics, logs, and trace building blocks",
+  "keywords": [],
+  "license": "none",
+  "author": "ForkLaunch",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist lib pnpm.lock.yaml tsconfig.tsbuildinfo node_modules",
+    "docs": "typedoc --out docs *",
+    "format": "prettier --ignore-path=.prettierignore --config .prettierrc '**/*.{ts,tsx,json}' --write",
+    "lint": "oxlint --config .oxlint.config.json",
+    "lint:fix": "oxlint --fix --config .oxlint.config.json",
+    "test": "pnpm vitest --passWithNoTests"
+  },
+  "dependencies": {
+    "@forklaunch/core": "~3.3.0"
+  },
+  "devDependencies": {},
+  "mikro-orm": {
+    "manifest_paths": [
+      "./mikro-orm.config.ts",
+      "./dist/mikro-orm.config.js"
+    ]
+  }
+}

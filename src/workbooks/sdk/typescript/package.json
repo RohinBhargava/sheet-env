@@ -1,0 +1,21 @@
+{
+  "name": "@sheet-env/workbooks",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./index.ts"
+    },
+    "./sdk": {
+      "types": "./sdk.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@forklaunch/universal-sdk": "~1.4.1"
+  }
+}

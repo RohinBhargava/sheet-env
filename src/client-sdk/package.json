@@ -1,0 +1,42 @@
+{
+  "name": "@sheet-env/client-sdk",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Client SDK for sheet-env, containing shared foundational infrastrucuture and utilities",
+  "keywords": [],
+  "license": "none",
+  "author": "ForkLaunch",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rm -rf dist lib pnpm.lock.yaml tsconfig.tsbuildinfo node_modules",
+    "docs": "typedoc --out docs *",
+    "format": "prettier --ignore-path=.prettierignore --config .prettierrc '**/*.{ts,tsx,json}' --write",
+    "lint": "oxlint --config .oxlint.config.json",
+    "lint:fix": "oxlint --fix --config .oxlint.config.json",
+    "test": "pnpm vitest --passWithNoTests"
+  },
+  "dependencies": {
+    "@forklaunch/common": "~1.2.32",
+    "@forklaunch/core": "~3.3.0",
+    "@forklaunch/universal-sdk": "~1.4.1",
+    "@forklaunch/validator": "~1.3.0",
+    "@types/express": "^5.0.6",
+    "@types/qs": "^6.15.1"
+  },
+  "devDependencies": {
+    "@sheet-env/workbooks": "workspace:*"
+  },
+  "mikro-orm": {
+    "manifest_paths": [
+      "./mikro-orm.config.ts",
+      "./dist/mikro-orm.config.js"
+    ]
+  },
+  "dependenciesMeta": {
+    "@sheet-env/workbooks": {
+      "injected": false
+    }
+  }
+}
