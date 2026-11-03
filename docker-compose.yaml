@@ -166,6 +166,7 @@ services:
       PORT: '8000'
       MCP_ENABLED: 'true'
       PUBLIC_ORIGIN: http://localhost:8000
+      MCP_ALLOWED_HOSTS: ${MCP_ALLOWED_HOSTS:-localhost}
       DATABASE_URL: ${WORKBOOKS_DATABASE_URL:?Configure a restricted service PostgreSQL role}
       TENANT_ID: ${WORKBOOKS_TENANT_ID:?Configure a trusted tenant UUID}
       STORAGE_ENCRYPTION_NAMESPACE: ${WORKBOOKS_STORAGE_ENCRYPTION_NAMESPACE:?Configure a stable service storage namespace}
@@ -260,6 +261,7 @@ services:
       PORT: '8000'
       MCP_ENABLED: 'true'
       PUBLIC_ORIGIN: http://localhost:8000
+      MCP_ALLOWED_HOSTS: ${MCP_ALLOWED_HOSTS:-localhost}
       DATABASE_URL: ${WORKBOOKS_MIGRATION_DATABASE_URL:?Configure the migration owner role}
       TENANT_ID: ${WORKBOOKS_TENANT_ID:?Configure a trusted tenant UUID}
       STORAGE_ENCRYPTION_NAMESPACE: ${WORKBOOKS_STORAGE_ENCRYPTION_NAMESPACE:?Configure a stable service storage namespace}
