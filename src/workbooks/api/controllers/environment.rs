@@ -6,11 +6,21 @@ use crate::{
 use forklaunch_axum::native::{EndpointError, State};
 use forklaunch_core::contract::endpoint::{NoFields, RequestFields};
 
-pub async fn get_env_state(State(state): State<AppState>, (): ()) -> Result<EnvState, EndpointError> {
+pub async fn get_env_state(
+    State(state): State<AppState>,
+    (): (),
+) -> Result<EnvState, EndpointError> {
     state.environment.state().await.map_err(endpoint_error)
 }
-pub async fn reset_env(State(state): State<AppState>, input: ResetInput) -> Result<EnvState, EndpointError> {
-    state.environment.reset(input.scenario.as_deref(), input.key.as_deref()).await.map_err(endpoint_error)
+pub async fn reset_env(
+    State(state): State<AppState>,
+    input: ResetInput,
+) -> Result<EnvState, EndpointError> {
+    state
+        .environment
+        .reset(input.scenario.as_deref(), input.key.as_deref())
+        .await
+        .map_err(endpoint_error)
 }
 pub async fn list_tasks(State(state): State<AppState>, (): ()) -> Result<TaskList, EndpointError> {
     state.environment.tasks().await.map_err(endpoint_error)
@@ -38,7 +48,8 @@ pub mod contract {
         path: &str,
         status: u16,
     ) -> Result<Endpoint<I, O>, &'static str> {
-        let mut route = RouteContract::new(name, summary, method, path).with_response(status, O::contract());
+        let mut route =
+            RouteContract::new(name, summary, method, path).with_response(status, O::contract());
         if let Some(body) = I::contract() {
             route = route.with_request_body(body);
         }
@@ -56,22 +67,47 @@ pub mod contract {
 
     #[access(Public)]
     pub fn get_env_state() -> Endpoint<NoBody, JsonBody<EnvState>> {
-        hidden("get_env_state", "Scenario, reset generation and a hash of every current workbook", HttpMethod::Get, "/api/env/state", 200)
-                .expect("valid env state endpoint")
+        hidden(
+            "get_env_state",
+            "Scenario, reset generation and a hash of every current workbook",
+            HttpMethod::Get,
+            "/api/env/state",
+            200,
+        )
+        .expect("valid env state endpoint")
     }
     #[access(Public)]
     pub fn reset_env() -> Endpoint<JsonBody<ResetInput>, JsonBody<EnvState>> {
-        hidden("reset_env", "Replace every workbook with a scenario's seed files", HttpMethod::Post, "/api/env/reset", 200)
-                .expect("valid reset endpoint")
+        hidden(
+            "reset_env",
+            "Replace every workbook with a scenario's seed files",
+            HttpMethod::Post,
+            "/api/env/reset",
+            200,
+        )
+        .expect("valid reset endpoint")
     }
     #[access(Public)]
     pub fn list_tasks() -> Endpoint<NoBody, JsonBody<TaskList>> {
-        Endpoint::new("list_tasks", "List the current scenario's tasks and the workbook each one uses", HttpMethod::Get, "/api/env/tasks", 200)
-            .expect("valid list tasks endpoint")
+        Endpoint::new(
+            "list_tasks",
+            "List the current scenario's tasks and the workbook each one uses",
+            HttpMethod::Get,
+            "/api/env/tasks",
+            200,
+        )
+        .expect("valid list tasks endpoint")
     }
     #[access(Public)]
-    pub fn verify_task() -> Endpoint<Fields<NoBody, NoFields, NoFields, TaskPath>, JsonBody<VerifyResult>> {
-        hidden("verify_task", "Grade a task against the workbook as last saved", HttpMethod::Post, "/api/env/tasks/:id/verify", 200)
-                .expect("valid verify endpoint")
+    pub fn verify_task()
+    -> Endpoint<Fields<NoBody, NoFields, NoFields, TaskPath>, JsonBody<VerifyResult>> {
+        hidden(
+            "verify_task",
+            "Grade a task against the workbook as last saved",
+            HttpMethod::Post,
+            "/api/env/tasks/:id/verify",
+            200,
+        )
+        .expect("valid verify endpoint")
     }
 }

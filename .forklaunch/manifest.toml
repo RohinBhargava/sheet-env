@@ -40,7 +40,10 @@ description = "Client SDK for sheet-env, containing shared foundational infrastr
 type = "Service"
 name = "workbooks"
 description = "Workbook storage, environment controls and agent tools"
-routers = []
+routers = [
+    "environment",
+    "files",
+]
 
 [projects.resources]
 database = "postgresql"
@@ -59,11 +62,17 @@ sdkTargets = [
 ]
 persistence = "postgresql"
 
+[[projects]]
+type = "Library"
+name = "web"
+description = "ForkLaunch Sheets browser app, served by the workbooks service from workbooks/web-dist"
+
 [project_peer_topology]
 sheet-env = [
     "core",
     "monitoring",
     "client-sdk",
+    "web",
 ]
 
 [framework]

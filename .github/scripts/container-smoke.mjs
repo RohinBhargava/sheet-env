@@ -8,6 +8,8 @@
 // Build one application Dockerfile and start each Rust HTTP process it serves.
 // Processes are discovered from docker-compose.yaml without interpolation: only
 // non-secret HTTP settings are passed, so startup must not require a database.
+// A process whose compose service has depends_on (database, migrations) is
+// started through compose instead, with the CI fixture values the workflow sets.
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
 
@@ -26,7 +28,11 @@ for (const image of images) if (image !== tag) docker('tag', tag, image);
 
 const HTTP_SETTINGS = ['HOST', 'PORT', 'PROTOCOL', 'VERSION', 'RUST_LOG',
   'PUBLIC_ORIGIN', 'DOCS_PATH', 'MCP_ENABLED', 'MCP_LISTENER'];
-const processes = services.filter(([, service]) => images.has(service.image) &&
+// One-shot jobs (migrations) that other services wait on to finish never listen.
+const oneShot = new Set(services.flatMap(([, service]) => Object.entries(service.depends_on ?? {})
+  .filter(([, dependency]) => dependency.condition === 'service_completed_successfully')
+  .map(([dependency]) => dependency)));
+const processes = services.filter(([name, service]) => !oneShot.has(name) && images.has(service.image) &&
   service.environment?.PORT !== undefined && Array.isArray(service.command) &&
   /^(\/app\/bin\/|\.\/target\/release\/)/.test(service.command[0]));
 
@@ -44,10 +50,13 @@ for (const [name, service] of processes) {
   const port = Number(service.environment.PORT);
   const settings = HTTP_SETTINGS.flatMap(key => service.environment[key] === undefined ? []
     : ['--env', `${key}=${service.environment[key]}`]);
-  const container = docker('run', '--detach', '--publish', `127.0.0.1::${port}`,
-    '--workdir', service.working_dir ?? '/app', ...settings, service.image, ...service.command);
+  const composed = service.depends_on !== undefined;
+  const container = composed
+    ? (docker('compose', 'up', '--detach', '--no-build', name), docker('compose', 'ps', '--quiet', name))
+    : docker('run', '--detach', '--publish', `127.0.0.1::${port}`,
+      '--workdir', service.working_dir ?? '/app', ...settings, service.image, ...service.command);
   try {
-    const base = `http://${docker('port', container, `${port}/tcp`).split('\n')[0]}`;
+    const base = `http://${docker('port', container, `${port}/tcp`).split('\n')[0].replace(/^0\.0\.0\.0:/, '127.0.0.1:')}`;
     let healthy = false;
     for (let attempt = 0; attempt < 120 && !healthy; attempt++) {
       assert.equal(docker('inspect', '--format', '{{.State.Running}}', container), 'true', `${name} exited during startup`);
@@ -68,7 +77,8 @@ for (const [name, service] of processes) {
     console.error(docker('logs', container));
     throw error;
   } finally {
-    docker('rm', '--force', container);
+    if (composed) docker('compose', 'down', '--volumes', '--remove-orphans');
+    else docker('rm', '--force', container);
   }
 }
 if (!processes.length) console.log(`PASS ${dockerfile}: image built; it serves no Rust HTTP process`);

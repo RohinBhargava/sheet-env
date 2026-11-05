@@ -192,14 +192,13 @@ impl PostgresRepository {
     /// Append a new version of `path` (version 1 when it is new or was deleted).
     pub async fn save(&self, path: &str, bytes: &[u8], modified_ms: u64) -> Result<StoredFile> {
         let mut transaction = self.transaction().await?;
-        let (latest,): (Option<i32>,) = sqlx::query_as(
-            "SELECT max(version) FROM file_versions WHERE tenant_id=$1 AND path=$2",
-        )
-        .bind(self.context.id())
-        .bind(path)
-        .fetch_one(&mut *transaction)
-        .await
-        .map_err(|_| unavailable())?;
+        let (latest,): (Option<i32>,) =
+            sqlx::query_as("SELECT max(version) FROM file_versions WHERE tenant_id=$1 AND path=$2")
+                .bind(self.context.id())
+                .bind(path)
+                .fetch_one(&mut *transaction)
+                .await
+                .map_err(|_| unavailable())?;
         let version = latest.map_or(1, |v| to_u32(v) + 1);
         self.insert_version(&mut transaction, path, version, bytes, modified_ms).await?;
         transaction.commit().await.map_err(|_| unavailable())?;
@@ -313,14 +312,13 @@ impl PostgresRepository {
     /// Tombstone `path`; earlier versions stay readable through `versions` history only.
     pub async fn delete(&self, path: &str, modified_ms: u64) -> Result<bool> {
         let mut transaction = self.transaction().await?;
-        let (latest,): (Option<i32>,) = sqlx::query_as(
-            "SELECT max(version) FROM file_versions WHERE tenant_id=$1 AND path=$2",
-        )
-        .bind(self.context.id())
-        .bind(path)
-        .fetch_one(&mut *transaction)
-        .await
-        .map_err(|_| unavailable())?;
+        let (latest,): (Option<i32>,) =
+            sqlx::query_as("SELECT max(version) FROM file_versions WHERE tenant_id=$1 AND path=$2")
+                .bind(self.context.id())
+                .bind(path)
+                .fetch_one(&mut *transaction)
+                .await
+                .map_err(|_| unavailable())?;
         let Some(latest) = latest else {
             return Ok(false);
         };

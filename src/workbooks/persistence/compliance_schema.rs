@@ -8,8 +8,8 @@
 #[allow(dead_code)]
 #[path = "entities/file_chunk.rs"]
 mod file_chunk;
-use forklaunch_core::persistence::compliance::ComplianceEntity;
 pub use file_chunk::FileChunk;
+use forklaunch_core::persistence::compliance::ComplianceEntity;
 pub fn declarations() -> Vec<ComplianceEntity> {
     vec![ComplianceEntity::of::<FileChunk>("file_chunks", "postgres-table")]
 }

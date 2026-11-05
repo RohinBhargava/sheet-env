@@ -29,7 +29,9 @@ pub fn clean_path(path: &str) -> Result<String> {
     if segments.is_empty()
         || segments.iter().any(|segment| {
             matches!(*segment, "." | "..")
-                || segment.chars().any(|c| c.is_control() || matches!(c, '<' | '>' | ':' | '"' | '|' | '?' | '*'))
+                || segment
+                    .chars()
+                    .any(|c| c.is_control() || matches!(c, '<' | '>' | ':' | '"' | '|' | '?' | '*'))
                 || segment.ends_with(' ')
                 || segment.ends_with('.')
         })
@@ -44,7 +46,12 @@ pub fn clean_path(path: &str) -> Result<String> {
 }
 
 fn entry(file: StoredFile) -> FileEntry {
-    FileEntry { path: file.path, size: file.size, modified_ms: file.modified_ms, version: u64::from(file.version) }
+    FileEntry {
+        path: file.path,
+        size: file.size,
+        modified_ms: file.modified_ms,
+        version: u64::from(file.version),
+    }
 }
 
 /// An .xlsx file is a zip package; refuse anything else before it reaches storage.
@@ -82,7 +89,11 @@ impl WorkbookService {
 
     pub async fn delete(&self, path: &str) -> Result<()> {
         let path = clean_path(path)?;
-        if self.repository.delete(&path, now_ms()).await? { Ok(()) } else { Err(AppError::NotFound(path)) }
+        if self.repository.delete(&path, now_ms()).await? {
+            Ok(())
+        } else {
+            Err(AppError::NotFound(path))
+        }
     }
 
     pub async fn versions(&self, path: &str) -> Result<VersionList> {
@@ -93,7 +104,11 @@ impl WorkbookService {
                 .versions(&path)
                 .await?
                 .into_iter()
-                .map(|file| VersionEntry { version: u64::from(file.version), modified_ms: file.modified_ms, size: file.size })
+                .map(|file| VersionEntry {
+                    version: u64::from(file.version),
+                    modified_ms: file.modified_ms,
+                    size: file.size,
+                })
                 .collect(),
         })
     }

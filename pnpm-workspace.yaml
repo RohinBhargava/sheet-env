@@ -54,3 +54,5 @@ packages:
 - src/*/events/typescript
 - src/*/sdk/typescript
 - src/*
+# src/web installs on its own (see src/web/pnpm-workspace.yaml).
+- '!src/web'

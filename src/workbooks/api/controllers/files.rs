@@ -1,6 +1,8 @@
 use crate::{
     api::controllers::endpoint_error,
-    domain::schemas::{CellQuery, FileEntry, FileList, FileQuery, SaveInput, SheetCells, VersionList},
+    domain::schemas::{
+        CellQuery, FileEntry, FileList, FileQuery, SaveInput, SheetCells, VersionList,
+    },
     domain::services::sheets::OpenWorkbook,
     persistence::Access,
     registrations::AppState,
@@ -22,8 +24,12 @@ pub async fn read_file(
 ) -> Result<Vec<u8>, EndpointError> {
     state.workbooks.read(&request.query.path, OPEN).await.map_err(endpoint_error)
 }
-pub async fn save_file(State(state): State<AppState>, input: SaveInput) -> Result<FileEntry, EndpointError> {
-    let bytes = STANDARD.decode(input.content_base64.trim()).map_err(|_| EndpointError::InvalidRequest)?;
+pub async fn save_file(
+    State(state): State<AppState>,
+    input: SaveInput,
+) -> Result<FileEntry, EndpointError> {
+    let bytes =
+        STANDARD.decode(input.content_base64.trim()).map_err(|_| EndpointError::InvalidRequest)?;
     state.workbooks.save(&input.path, &bytes).await.map_err(endpoint_error)
 }
 pub async fn delete_file(
@@ -47,12 +53,20 @@ pub async fn read_cells(
     let read = OpenWorkbook::open(bytes)
         .and_then(|mut workbook| workbook.read(query.sheet.as_deref(), query.range.as_deref()))
         .map_err(endpoint_error)?;
-    Ok(SheetCells { path: query.path, sheet: read.sheet, sheets: read.sheets, range: read.range, cells: read.cells })
+    Ok(SheetCells {
+        path: query.path,
+        sheet: read.sheet,
+        sheets: read.sheets,
+        range: read.range,
+        cells: read.cells,
+    })
 }
 
 #[forklaunch_core::contract::api]
 pub mod contract {
-    use crate::domain::schemas::{CellQuery, FileEntry, FileList, FileQuery, SaveInput, SheetCells, VersionList};
+    use crate::domain::schemas::{
+        CellQuery, FileEntry, FileList, FileQuery, SaveInput, SheetCells, VersionList,
+    };
     use forklaunch_core::contract::{
         HttpMethod, MediaType, RouteContract,
         endpoint::{BinaryBody, Endpoint, EndpointBody, Fields, JsonBody, NoBody, NoFields},
@@ -66,7 +80,8 @@ pub mod contract {
         path: &str,
         status: u16,
     ) -> Result<Endpoint<I, O>, &'static str> {
-        let mut route = RouteContract::new(name, summary, method, path).with_response(status, O::contract());
+        let mut route =
+            RouteContract::new(name, summary, method, path).with_response(status, O::contract());
         if let Some(body) = I::contract() {
             route = route.with_request_body(body);
         }
@@ -84,14 +99,26 @@ pub mod contract {
 
     #[access(Public)]
     pub fn list_files() -> Endpoint<NoBody, JsonBody<FileList>> {
-        Endpoint::new("list_files", "List every workbook (current versions), in path order", HttpMethod::Get, "/api/files", 200)
-            .expect("valid list files endpoint")
+        Endpoint::new(
+            "list_files",
+            "List every workbook (current versions), in path order",
+            HttpMethod::Get,
+            "/api/files",
+            200,
+        )
+        .expect("valid list files endpoint")
     }
     #[access(Public)]
     pub fn read_file() -> Endpoint<Fields<NoBody, FileQuery, NoFields>, BinaryBody> {
-        hidden("read_file", "Download a workbook's current .xlsx bytes", HttpMethod::Get, "/api/files/raw", 200)
-                .and_then(|endpoint| endpoint.with_response_media(MediaType::Spreadsheet))
-                .expect("valid read file endpoint")
+        hidden(
+            "read_file",
+            "Download a workbook's current .xlsx bytes",
+            HttpMethod::Get,
+            "/api/files/raw",
+            200,
+        )
+        .and_then(|endpoint| endpoint.with_response_media(MediaType::Spreadsheet))
+        .expect("valid read file endpoint")
     }
     #[access(Public)]
     pub fn save_file() -> Endpoint<JsonBody<SaveInput>, JsonBody<FileEntry>> {
@@ -106,13 +133,25 @@ pub mod contract {
     }
     #[access(Public)]
     pub fn delete_file() -> Endpoint<Fields<NoBody, FileQuery, NoFields>, NoBody> {
-        hidden("delete_file", "Delete a workbook (its history is kept)", HttpMethod::Delete, "/api/files/raw", 204)
-                .expect("valid delete file endpoint")
+        hidden(
+            "delete_file",
+            "Delete a workbook (its history is kept)",
+            HttpMethod::Delete,
+            "/api/files/raw",
+            204,
+        )
+        .expect("valid delete file endpoint")
     }
     #[access(Public)]
     pub fn list_versions() -> Endpoint<Fields<NoBody, FileQuery, NoFields>, JsonBody<VersionList>> {
-        Endpoint::new("list_versions", "List a workbook's saved versions, newest first", HttpMethod::Get, "/api/files/versions", 200)
-            .expect("valid list versions endpoint")
+        Endpoint::new(
+            "list_versions",
+            "List a workbook's saved versions, newest first",
+            HttpMethod::Get,
+            "/api/files/versions",
+            200,
+        )
+        .expect("valid list versions endpoint")
     }
     #[access(Public)]
     pub fn read_cells() -> Endpoint<Fields<NoBody, CellQuery, NoFields>, JsonBody<SheetCells>> {

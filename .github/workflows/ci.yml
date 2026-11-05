@@ -62,6 +62,15 @@ jobs:
   docker:
     name: Docker
     runs-on: ubuntu-latest
+    # Throwaway fixtures for the compose stack the smoke test starts (database, migrations, service).
+    env:
+      WORKBOOKS_DATABASE_URL: postgres://workbooks_app@postgresql:5432/sheet_env_workbooks
+      WORKBOOKS_MIGRATION_DATABASE_URL: postgres://workbooks_owner@postgresql:5432/sheet_env_workbooks
+      WORKBOOKS_TENANT_ID: 6f1c1a52-3f0e-4c38-9a4e-2d6f5f0b8c11
+      WORKBOOKS_STORAGE_ENCRYPTION_NAMESPACE: sheet-env-ci
+      ENCRYPTION_KEY_HEX: 000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f
+      DATABASE_ALLOW_PLAINTEXT_DEVELOPMENT: 'true'
+      MCP_ALLOWED_HOSTS: localhost,127.0.0.1
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

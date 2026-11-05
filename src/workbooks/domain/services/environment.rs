@@ -107,13 +107,19 @@ impl EnvironmentService {
     /// Seed the default scenario the first time the service starts against an empty database.
     pub async fn boot(&self) -> Result<()> {
         if self.repository.meta().await?.is_none() {
-            self.repository.reset(DEFAULT_SCENARIO, &seed_files(DEFAULT_SCENARIO)?, now_ms()).await?;
+            self.repository
+                .reset(DEFAULT_SCENARIO, &seed_files(DEFAULT_SCENARIO)?, now_ms())
+                .await?;
         }
         Ok(())
     }
 
     pub async fn scenario(&self) -> Result<String> {
-        Ok(self.repository.meta().await?.map_or_else(|| DEFAULT_SCENARIO.to_owned(), |(scenario, _)| scenario))
+        Ok(self
+            .repository
+            .meta()
+            .await?
+            .map_or_else(|| DEFAULT_SCENARIO.to_owned(), |(scenario, _)| scenario))
     }
 
     pub async fn reset(&self, scenario: Option<&str>, key: Option<&str>) -> Result<EnvState> {
@@ -137,7 +143,12 @@ impl EnvironmentService {
             hash.update(format!("{}\0{}\0{}\n", file.path, file.version, file.content_sha256));
         }
         let state_hash = hash.finalize().iter().map(|byte| format!("{byte:02x}")).collect();
-        Ok(EnvState { scenario, generation: u64::from(generation), state_hash, file_count: files.len() as u64 })
+        Ok(EnvState {
+            scenario,
+            generation: u64::from(generation),
+            state_hash,
+            file_count: files.len() as u64,
+        })
     }
 
     pub async fn tasks(&self) -> Result<TaskList> {
@@ -145,7 +156,12 @@ impl EnvironmentService {
         Ok(TaskList {
             tasks: tasks(&scenario)?
                 .into_iter()
-                .map(|task| TaskSummary { id: task.id, title: task.title, instructions: task.instructions, file: task.file })
+                .map(|task| TaskSummary {
+                    id: task.id,
+                    title: task.title,
+                    instructions: task.instructions,
+                    file: task.file,
+                })
                 .collect(),
             scenario,
         })
@@ -174,7 +190,10 @@ impl EnvironmentService {
             let (expected, passed) = match (&check.equals, check.approx) {
                 (_, Some(target)) => {
                     let tolerance = check.tolerance.unwrap_or(0.005).abs();
-                    (format!("{target} ± {tolerance}"), number.is_some_and(|n| (n - target).abs() <= tolerance))
+                    (
+                        format!("{target} ± {tolerance}"),
+                        number.is_some_and(|n| (n - target).abs() <= tolerance),
+                    )
                 }
                 (Some(Expected::Number(target)), None) => {
                     (target.to_string(), number.is_some_and(|n| (n - target).abs() <= 1e-9))
@@ -188,6 +207,10 @@ impl EnvironmentService {
             };
             checks.push(CheckResult { sheet, cell: check.cell.clone(), expected, actual, passed });
         }
-        Ok(VerifyResult { task_id: task.id, passed: !checks.is_empty() && checks.iter().all(|c| c.passed), checks })
+        Ok(VerifyResult {
+            task_id: task.id,
+            passed: !checks.is_empty() && checks.iter().all(|c| c.passed),
+            checks,
+        })
     }
 }

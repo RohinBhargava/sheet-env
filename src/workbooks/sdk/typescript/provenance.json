@@ -130,8 +130,8 @@
         "sha256": "4d3ceb9617bcf268f886a33a01c8d446f6263b19bc9fe71c75b9cd32c3418c88"
       },
       ".forklaunch/manifest.toml": {
-        "bytes": 1790,
-        "sha256": "e4b661eb44a736ba4395897f9be4a1775faf58a06ee9a4538a5e38d29a38adb6"
+        "bytes": 1964,
+        "sha256": "7ca71ea2d81c755156f9e209f5ba4cf80c4c0417d722eaf4f3cd73c47c62535a"
       },
       "Cargo.lock": {
         "bytes": 104719,
@@ -150,20 +150,20 @@
         "sha256": "a653a673f6662f003d766008aba76a30d30f717cde5a1b6cd0f8cd323a229fe0"
       },
       "src/workbooks/.forklaunch/contracts/lib.rs": {
-        "bytes": 1663,
-        "sha256": "7c0aeb1c3175779382e0efcc3fdbd121baff3d48e9dc97b70623a3120da56909"
+        "bytes": 1673,
+        "sha256": "642bd1d3bcd0a19833d4bc4bc7ac615f3209c181acf96d7aec30b18cac868bc9"
       },
       "src/workbooks/Cargo.toml": {
         "bytes": 1612,
         "sha256": "b4865e229c9172170f366eb3f5be4e127a922909caf1ba25f30012b498cf543a"
       },
       "src/workbooks/api/controllers/environment.rs": {
-        "bytes": 3514,
-        "sha256": "e73b57aa309c13071e89543c424c0424fc38f60bb52e72a164066440e77ce5a0"
+        "bytes": 3844,
+        "sha256": "2517f69a5ff222874143bc22bc01d2b35d2a9ed6a3ae83fd9cc5c5dce92369dc"
       },
       "src/workbooks/api/controllers/files.rs": {
-        "bytes": 5775,
-        "sha256": "c9fd99b904a796e2265c2ed8cd612bb67083393fd9f014152b90627b56f56386"
+        "bytes": 6133,
+        "sha256": "4e7521496440a1c534fa006b14c633feaf40512d2b5ece33877fdc754fefbe2f"
       },
       "src/workbooks/api/controllers/health.rs": {
         "bytes": 880,
@@ -226,8 +226,8 @@
         "sha256": "f3c556d11b10fca9fa0f66f5c031c7b19650c16a76e56fc25484dc66a0694e96"
       },
       "src/workbooks/domain/services/environment.rs": {
-        "bytes": 7365,
-        "sha256": "290cda85ff73f7b207b3541d8c52a4765362914cab67ce4febfdd07f44f8ddf9"
+        "bytes": 7721,
+        "sha256": "aa03511924ba60082d85fbc1d19c99bea5cacc4a478d4d152d72c7e2a078bd2d"
       },
       "src/workbooks/domain/services/health.rs": {
         "bytes": 790,
@@ -238,12 +238,12 @@
         "sha256": "360373c83d97fe67928d9b4581533294ca68e9fd34896ba73636562acc496e64"
       },
       "src/workbooks/domain/services/sheets.rs": {
-        "bytes": 6379,
-        "sha256": "aecedadc556f4507ec0075dea117e1da23aae75d11a8886fa1651ddbf89d0f8b"
+        "bytes": 6585,
+        "sha256": "b6df587594f3e62944a914d7adda3547cb2c7292ddc5090560c0bea5cacdc761"
       },
       "src/workbooks/domain/services/workbooks.rs": {
-        "bytes": 3547,
-        "sha256": "58428a422941ea265b4d584ac37d92e08dc4b04f5aa4c089eed2baf31cb87ea9"
+        "bytes": 3743,
+        "sha256": "47e66d15dc784a6d56ce791c9b6ece7175431586215a7da34b2b30f742927813"
       },
       "src/workbooks/lib.rs": {
         "bytes": 385,
@@ -255,7 +255,7 @@
       },
       "src/workbooks/persistence/compliance_schema.rs": {
         "bytes": 541,
-        "sha256": "f1d484f0aea453ba66e04ab74c0515079d6940599ba23437225780dc71f38410"
+        "sha256": "456fc7512935c0f507e62dee84bd6b2193629c9ed6dad00de63ea3c12f1b24d8"
       },
       "src/workbooks/persistence/database.rs": {
         "bytes": 2010,
@@ -274,8 +274,8 @@
         "sha256": "1811df613990e6344de526a4f459c2e9ad37d61cf47fd83ed6949c8bf20c61c4"
       },
       "src/workbooks/persistence/repository.rs": {
-        "bytes": 15772,
-        "sha256": "7fb672b16b74daa7be28d5c72af853ec10b02afe5adb70b09ca04eaa56a2ed80"
+        "bytes": 15830,
+        "sha256": "2ab2197d2de656fdf4c35d152875d2edfc7f8b808dd8e93c47e6e3bafde1ac86"
       },
       "src/workbooks/registrations.rs": {
         "bytes": 1847,

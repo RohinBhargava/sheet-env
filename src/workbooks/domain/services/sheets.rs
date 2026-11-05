@@ -83,12 +83,18 @@ pub fn display(data: &Data) -> (String, Option<f64>) {
 }
 
 fn format_number(number: f64) -> String {
-    if number.fract() == 0.0 && number.abs() < 1e15 { format!("{number:.0}") } else { number.to_string() }
+    if number.fract() == 0.0 && number.abs() < 1e15 {
+        format!("{number:.0}")
+    } else {
+        number.to_string()
+    }
 }
 
 impl OpenWorkbook {
     pub fn open(bytes: Vec<u8>) -> Result<Self> {
-        Xlsx::new(Cursor::new(bytes)).map(|workbook| Self { workbook }).map_err(|_| invalid("workbook"))
+        Xlsx::new(Cursor::new(bytes))
+            .map(|workbook| Self { workbook })
+            .map_err(|_| invalid("workbook"))
     }
 
     pub fn sheet_names(&self) -> Vec<String> {
@@ -142,7 +148,12 @@ impl OpenWorkbook {
                 if value.0.is_empty() && formula.is_none() {
                     continue;
                 }
-                cells.push(CellValue { address: address(row, col), value: value.0, number: value.1, formula });
+                cells.push(CellValue {
+                    address: address(row, col),
+                    value: value.0,
+                    number: value.1,
+                    formula,
+                });
                 if cells.len() >= MAX_CELLS {
                     break 'rows;
                 }
@@ -159,7 +170,12 @@ mod tests {
 
     #[test]
     fn addresses_round_trip() {
-        for (text, rc) in [("A1", (0, 0)), ("Z9", (8, 25)), ("AA10", (9, 26)), ("$XFD$1048576", (1_048_575, 16_383))] {
+        for (text, rc) in [
+            ("A1", (0, 0)),
+            ("Z9", (8, 25)),
+            ("AA10", (9, 26)),
+            ("$XFD$1048576", (1_048_575, 16_383)),
+        ] {
             assert_eq!(parse_address(text), Some(rc));
             assert_eq!(address(rc.0, rc.1), text.replace('$', ""));
         }

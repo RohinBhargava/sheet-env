@@ -12,7 +12,10 @@ pub mod domain {
 }
 forklaunch_core::contract::controller_contract!(health, "../../api/controllers/health.rs");
 forklaunch_core::contract::controller_contract!(files, "../../api/controllers/files.rs");
-forklaunch_core::contract::controller_contract!(environment, "../../api/controllers/environment.rs");
+forklaunch_core::contract::controller_contract!(
+    environment,
+    "../../api/controllers/environment.rs"
+);
 
 pub fn routes() -> Vec<forklaunch_core::contract::RouteContract> {
     let mut routes = Vec::new();
