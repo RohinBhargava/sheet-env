@@ -33,7 +33,7 @@ forklaunch-core = { version = "=0.2.5", features = ["typed-schema", "openapi", "
 sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio", "tls-rustls", "postgres", "uuid", "migrate", "macros"] }
 uuid = { version = "1", features = ["v4"] }
 include_dir = "0.7"
-calamine = "0.37.0"
+calamine = "0.38.0"
 sha2 = "0.10"
 serde = { version = "1.0.229", features = ["derive"] }
 base64 = "0.22"
