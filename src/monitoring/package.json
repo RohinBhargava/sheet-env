@@ -18,7 +18,7 @@
     "test": "pnpm vitest --passWithNoTests"
   },
   "dependencies": {
-    "@forklaunch/core": "~3.3.0"
+    "@forklaunch/core": "~3.5.0"
   },
   "devDependencies": {},
   "mikro-orm": {
