@@ -14,7 +14,7 @@ ARG CARGO_BUILD_JOBS=2
 RUN cargo build --locked --release --workspace --bins
 FROM debian:bookworm-slim AS runtime
 WORKDIR /app
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends ca-certificates curl && rm -rf /var/lib/apt/lists/*
 ADD --chmod=0644 https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /app/certs/rds-global-bundle.pem
 RUN chmod 0755 /app/certs
 COPY --from=builder /app/target/release/workbooks /app/bin/workbooks
